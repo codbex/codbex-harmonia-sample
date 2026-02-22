@@ -1,75 +1,238 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Vue 3 Form with Harmonia with Tailwind (ES6)</title>
-        <!-- Import Tailwind CSS from CDN -->
-        <script src="https://cdn.tailwindcss.com"></script>
-    </head>
+		<script defer src="./node_modules/alpinejs/dist/cdn.min.js"></script>
+		<script src="./node_modules/@codbex/harmonia/dist/harmonia.min.js"></script>
+		<link href="./node_modules/@codbex/harmonia/dist/harmonia.css" rel="stylesheet" />
+		<link href="./fonts.css" rel="stylesheet" />
+		<link href="./theme.css" rel="stylesheet" />
+	</head>
+	<body class="min-h-screen bg-background text-foreground" x-data="dashboard">
+		<div class="hbox min-h-screen">
+			<aside x-h-sidebar x-bind:data-collapsed="sidebarCollapsed" class="shrink-0 h-screen">
+				<div x-h-sidebar-header>
+					<div class="hbox items-center justify-between gap-2">
+						<div class="hbox items-center gap-2 min-w-0">
+							<div class="font-semibold truncate">Harmonia</div>
+						</div>
+						<button type="button" x-h-button data-variant="transparent" data-size="icon-sm" aria-label="Toggle sidebar" x-on:click="sidebarCollapsed = !sidebarCollapsed">≡</button>
+					</div>
+				</div>
 
-    <body class="bg-gray-100 p-8">
-        <div id="app" class="max-w-lg mx-auto bg-white p-8 rounded-lg shadow-lg">
-            <h1 class="text-2xl font-bold mb-6">Enhanced Form</h1>
+				<div x-h-sidebar-content>
+					<div x-h-sidebar-group>
+						<div class="hbox items-center justify-between">
+							<div x-h-sidebar-group-label>Navigation</div>
+							<button type="button" x-h-sidebar-group-action aria-label="Group action" x-on:click="sidebarPinned = !sidebarPinned">+</button>
+						</div>
+						<div x-h-sidebar-group-content>
+							<nav x-h-sidebar-menu>
+								<div x-h-sidebar-menu-item>
+									<button type="button" x-h-sidebar-menu-button data-active="true" x-on:click="activePage = 'dashboard'">
+										<span>Dashboard</span>
+									</button>
+									<button type="button" x-h-sidebar-menu-action.autohide aria-label="Dashboard action" x-on:click="createDialogOpen = true">⋯</button>
+								</div>
 
-            <form @submit.prevent="submitForm">
+								<div x-h-sidebar-menu-item>
+									<button type="button" x-h-sidebar-menu-button x-on:click="activePage = 'forms'">
+										<span>Forms</span>
+									</button>
+								</div>
 
-                <!-- Text Input -->
-                <ha-input label="Name" v-model="formData.name"></ha-input>
+								<div x-h-sidebar-menu-item>
+									<button type="button" x-h-sidebar-menu-button x-on:click="sidebarSubOpen = !sidebarSubOpen" x-bind:data-state="sidebarSubOpen ? 'open' : 'closed'">
+										<span>Projects</span>
+										<span class="ml-auto" x-text="sidebarSubOpen ? '▾' : '▸'"></span>
+									</button>
+									<div x-h-sidebar-menu-sub x-show="sidebarSubOpen" x-cloak>
+										<div x-h-sidebar-menu-sub-item>
+											<button type="button" x-h-sidebar-menu-sub-button data-active="false" x-on:click="activeProject = 'alpha'">
+												<span>Alpha</span>
+											</button>
+										</div>
+										<div x-h-sidebar-menu-sub-item>
+											<button type="button" x-h-sidebar-menu-sub-button data-active="false" x-on:click="activeProject = 'beta'">
+												<span>Beta</span>
+											</button>
+										</div>
+									</div>
+								</div>
+							</nav>
+						</div>
+					</div>
 
-                <!-- Date Input -->
-                <ha-input label="Date" type="date" v-model="formData.date"></ha-input>
+					<div x-h-sidebar-separator></div>
 
-                <!-- Radio Buttons -->
-                <div class="space-y-2">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Gender</label>
-                    <ha-radio id="male" name="gender" value="Male" label="Male" v-model="formData.gender"></ha-radio>
-                    <ha-radio id="female" name="gender" value="Female" label="Female" v-model="formData.gender">
-                    </ha-radio>
-                </div>
+					<div x-h-sidebar-group>
+						<div x-h-sidebar-group-label>Loading</div>
+						<div x-h-sidebar-group-content>
+							<div x-h-sidebar-menu>
+								<div x-h-sidebar-menu-skeleton.icon></div>
+								<div x-h-sidebar-menu-skeleton.icon></div>
+								<div x-h-sidebar-menu-skeleton.icon></div>
+							</div>
+						</div>
+					</div>
+				</div>
 
-                <!-- Slider -->
-                <ha-slider label="Age" v-model="formData.age" min="18" max="100"></ha-slider>
+				<div x-h-sidebar-footer>
+					<div class="hbox items-center justify-between gap-2">
+						<div class="text-sm text-sidebar-foreground/70 truncate" x-text="profile.fullName"></div>
+						<button type="button" x-h-button data-variant="outline" data-size="sm" x-on:click="createDialogOpen = true">New</button>
+					</div>
+				</div>
+			</aside>
 
-                <!-- CheckBox -->
-                <ha-checkbox id="agree" value="agree" label="Agree to terms" v-model="formData.agree">
-                </ha-checkbox>
+			<div class="min-w-0 flex-1">
+				<div class="mx-auto vbox w-full max-w-6xl gap-6 p-6">
+					<header class="hbox items-center justify-between gap-4">
+						<div class="vbox gap-1">
+							<h1 class="text-xl font-semibold">Dashboard</h1>
+							<p class="text-muted-foreground text-sm">test</p>
+						</div>
+						<div class="hbox items-center gap-2">
+							<button type="button" x-h-button data-variant="outline" x-h-menu-trigger.dropdown aria-haspopup="menu" aria-label="Open menu">Menu</button>
+							<div x-h-menu aria-label="Dashboard menu" data-align="bottom-end">
+								<div x-h-menu-label>Quick actions</div>
+								<button type="button" x-h-menu-item x-on:click="activePage = 'dashboard'">
+									Dashboard
+									<span x-h-menu-item-secondary>⌘D</span>
+								</button>
+								<button type="button" x-h-menu-item x-on:click="activePage = 'forms'">
+									Forms
+									<span x-h-menu-item-secondary>⌘F</span>
+								</button>
+								<div x-h-menu-separator></div>
 
-                <!-- Submit Button -->
-                <ha-button type="primary">Submit</ha-button>
-            </form>
+								<div x-h-menu-label>Preferences</div>
+								<button type="button" x-h-menu-checkbox-item x-model="menuPrefs.compact">Compact layout</button>
+								<button type="button" x-h-menu-checkbox-item x-model="menuPrefs.showHints">Show hints</button>
+								<div x-h-menu-separator></div>
 
-            <!-- Output the Form Data -->
-            <div class="mt-6 bg-gray-50 p-4 rounded-lg">
-                <pre>{{ formData }}</pre>
-            </div>
+								<div x-h-menu-sub>
+									Theme
+									<div x-h-menu.sub aria-label="Theme submenu">
+										<button type="button" x-h-menu-radio-item="'system'" x-model="menuPrefs.theme">System</button>
+										<button type="button" x-h-menu-radio-item="'light'" x-model="menuPrefs.theme">Light</button>
+										<button type="button" x-h-menu-radio-item="'dark'" x-model="menuPrefs.theme">Dark</button>
+									</div>
+								</div>
 
-            <!-- Table for Remote Data -->
-            <div class="mt-10">
-                <h2 class="text-xl font-bold mb-4">Remote Data</h2>
-                <table class="table-auto w-full bg-white shadow-md rounded-lg">
-                    <thead>
-                        <tr class="bg-gray-200 text-gray-700">
-                            <th class="px-4 py-2">ID</th>
-                            <th class="px-4 py-2">Name</th>
-                            <th class="px-4 py-2">Email</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="user in users" :key="user.id" class="text-gray-700">
-                            <td class="border px-4 py-2">{{ user.id }}</td>
-                            <td class="border px-4 py-2">{{ user.name }}</td>
-                            <td class="border px-4 py-2">{{ user.email }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <!-- Import Vue -->
-        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-        <!-- Import JavaScript file as ES6 module -->
-        <script type="module" src="main.js"></script>
-    </body>
+								<div x-h-menu-separator></div>
+								<button type="button" x-h-menu-item data-variant="negative" x-on:click="resetProfile();">Reset all</button>
+							</div>
+						</div>
+					</header>
 
+					<main class="grid grid-cols-1 gap-6 md:grid-cols-2">
+						<section x-h-card>
+							<div x-h-card-header>
+								<div>
+									<h2 x-h-card-title>Profile</h2>
+									<p x-h-card-description>test</p>
+								</div>
+							</div>
+							<div x-h-card-content>
+								<form class="vbox gap-4" x-on:submit.prevent>
+									<div class="vbox gap-2">
+										<label class="text-sm font-medium" for="fullName">Full name</label>
+										<input id="fullName" name="fullName" type="text" autocomplete="name" placeholder="Jane Doe" x-h-input x-model="profile.fullName" />
+									</div>
+
+									<div class="vbox gap-2">
+										<label class="text-sm font-medium" for="email">Email</label>
+										<div x-h-input-group>
+											<div x-h-input-group-addon data-align="inline-start">
+												<span x-h-input-group-text>@</span>
+											</div>
+											<input id="email" name="email" type="text" autocomplete="email" placeholder="jane" x-h-input.group x-model="profile.emailLocal" />
+											<div x-h-input-group-addon data-align="inline-end">
+												<span x-h-input-group-text>example.com</span>
+											</div>
+										</div>
+										<p class="text-muted-foreground text-xs">Stored as: <span class="font-medium" x-text="profileEmail || '—'"></span></p>
+									</div>
+
+									<div class="vbox gap-2">
+										<label class="text-sm font-medium" for="phone">Phone</label>
+										<div x-h-input-group>
+											<div x-h-input-group-addon data-align="inline-start">
+												<span x-h-input-group-text>+359</span>
+											</div>
+											<input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="88 123 4567" x-h-input.group x-model="profile.phone" />
+										</div>
+									</div>
+								</form>
+							</div>
+							<div x-h-card-footer class="border-t">
+								<button type="button" x-h-button data-variant="outline" x-on:click="resetProfile()">Reset</button>
+								<div class="flex-1"></div>
+								<button type="button" x-h-button data-variant="primary" x-on:click="saveProfile()">Save profile</button>
+							</div>
+						</section>
+
+						<section x-h-card>
+							<div x-h-card-header>
+								<div>
+									<h2 x-h-card-title>Skeletons</h2>
+									<p x-h-card-description>test</p>
+								</div>
+							</div>
+							<div x-h-card-content class="vbox gap-3">
+								<div x-h-skeleton.card class="h-24 w-full"></div>
+								<div class="hbox items-center gap-3">
+									<div x-h-skeleton.avatar></div>
+									<div class="vbox flex-1 gap-2">
+										<div x-h-skeleton class="h-4 w-2/3"></div>
+										<div x-h-skeleton class="h-4 w-1/2"></div>
+									</div>
+								</div>
+								<div x-h-skeleton.control data-size="md" class="w-full"></div>
+							</div>
+						</section>
+					</main>
+				</div>
+			</div>
+		</div>
+
+		<div x-h-dialog-overlay x-bind:data-open="createDialogOpen" x-on:click.self="createDialogOpen = false" x-on:keydown.escape.window="createDialogOpen = false">
+			<div x-h-dialog x-on:click.stop>
+				<div x-h-dialog-header>
+					<div>
+						<h2 x-h-dialog-title>New user</h2>
+						<p x-h-dialog-description>Create a user record using Harmonia input groups.</p>
+					</div>
+					<button type="button" x-h-dialog-close x-h-button data-variant="transparent" data-size="icon-sm" aria-label="Close" x-on:click="createDialogOpen = false">&times;</button>
+				</div>
+
+				<form class="vbox gap-4" x-on:submit.prevent="createUser()">
+					<div class="vbox gap-2">
+						<label class="text-sm font-medium" for="username">Username</label>
+						<div x-h-input-group>
+							<div x-h-input-group-addon data-align="inline-start">
+								<span x-h-input-group-text>@</span>
+							</div>
+							<input id="username" name="username" type="text" autocomplete="username" placeholder="jane" x-h-input.group x-model="newUser.username" autofocus />
+						</div>
+					</div>
+
+					<div class="vbox gap-2">
+						<label class="text-sm font-medium" for="userEmail">Email</label>
+						<input id="userEmail" name="userEmail" type="email" autocomplete="email" placeholder="jane@example.com" x-h-input x-model="newUser.email" />
+					</div>
+
+					<div x-h-dialog-footer>
+						<button type="button" x-h-button data-variant="outline" x-on:click="createDialogOpen = false">Cancel</button>
+						<button type="submit" x-h-button data-variant="primary">Create</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<script src="./main.js"></script>
+	</body>
 </html>

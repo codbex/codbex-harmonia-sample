@@ -12,6 +12,7 @@
 	"dependencies": {
 		"@codbex/harmonia": "^1.1.2",
 		"@fontsource/open-sans": "^5.2.7",
-		"alpinejs": "^3.15.8"
+		"alpinejs": "^3.15.8",
+		"lucide": "^0.542.0"
 	}
 }

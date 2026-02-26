@@ -1,7 +1,10 @@
+document.addEventListener('DOMContentLoaded', () => {
+	lucide.createIcons();
+});
+
 document.addEventListener('alpine:init', () => {
 	Alpine.data('dashboard', () => ({
 		sidebarCollapsed: false,
-		sidebarPinned: false,
 		sidebarSubOpen: true,
 		activePage: 'dashboard',
 		activeProject: 'alpha',

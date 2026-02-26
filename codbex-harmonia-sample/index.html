@@ -4,229 +4,226 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+		<script defer src="./node_modules/lucide/dist/umd/lucide.min.js"></script>
 		<script defer src="./node_modules/alpinejs/dist/cdn.min.js"></script>
 		<script src="./node_modules/@codbex/harmonia/dist/harmonia.min.js"></script>
 		<link href="./node_modules/@codbex/harmonia/dist/harmonia.css" rel="stylesheet" />
 		<link href="./fonts.css" rel="stylesheet" />
 		<link href="./theme.css" rel="stylesheet" />
 	</head>
-	<body class="min-h-screen bg-background text-foreground" x-data="dashboard">
-		<div class="hbox min-h-screen">
-			<aside x-h-sidebar x-bind:data-collapsed="sidebarCollapsed" class="shrink-0 h-screen">
-				<div x-h-sidebar-header>
-					<div class="hbox items-center justify-between gap-2">
-						<div class="hbox items-center gap-2 min-w-0">
-							<div class="font-semibold truncate">Harmonia</div>
-						</div>
-						<button type="button" x-h-button data-variant="transparent" data-size="icon-sm" aria-label="Toggle sidebar" x-on:click="sidebarCollapsed = !sidebarCollapsed">≡</button>
+	<body class="hbox h-screen" x-data="dashboard">
+		<div x-h-sidebar x-bind:data-collapsed="sidebarCollapsed">
+			<div x-h-sidebar-header>
+				<button type="button" x-h-sidebar-menu-button @click="sidebarCollapsed = !sidebarCollapsed">
+					<span class="sr-only">Toggle sidebar</span>
+					<i role="img" data-lucide="panel-left-open" x-show="sidebarCollapsed" x-cloak></i>
+					<span class="font-semibold truncate" x-show="!sidebarCollapsed" x-cloak>Harmonia</span>
+					<i role="img" data-lucide="panel-left-close" x-show="!sidebarCollapsed" x-cloak></i>
+				</button>
+			</div>
+
+			<div x-h-sidebar-content>
+				<div x-h-sidebar-group>
+					<div x-h-sidebar-group-label>
+						<span>Navigation</span>
+						<button type="button" x-h-sidebar-group-action @click="createDialogOpen = true">
+							<i role="img" data-lucide="plus"></i>
+							<span class="sr-only">Add</span>
+						</button>
 					</div>
-				</div>
-
-				<div x-h-sidebar-content>
-					<div x-h-sidebar-group>
-						<div class="hbox items-center justify-between">
-							<div x-h-sidebar-group-label>Navigation</div>
-							<button type="button" x-h-sidebar-group-action aria-label="Group action" x-on:click="sidebarPinned = !sidebarPinned">+</button>
-						</div>
-						<div x-h-sidebar-group-content>
-							<nav x-h-sidebar-menu>
-								<div x-h-sidebar-menu-item>
-									<button type="button" x-h-sidebar-menu-button data-active="true" x-on:click="activePage = 'dashboard'">
-										<span>Dashboard</span>
-									</button>
-									<button type="button" x-h-sidebar-menu-action.autohide aria-label="Dashboard action" x-on:click="createDialogOpen = true">⋯</button>
-								</div>
-
-								<div x-h-sidebar-menu-item>
-									<button type="button" x-h-sidebar-menu-button x-on:click="activePage = 'forms'">
-										<span>Forms</span>
-									</button>
-								</div>
-
-								<div x-h-sidebar-menu-item>
-									<button type="button" x-h-sidebar-menu-button x-on:click="sidebarSubOpen = !sidebarSubOpen" x-bind:data-state="sidebarSubOpen ? 'open' : 'closed'">
-										<span>Projects</span>
-										<span class="ml-auto" x-text="sidebarSubOpen ? '▾' : '▸'"></span>
-									</button>
-									<div x-h-sidebar-menu-sub x-show="sidebarSubOpen" x-cloak>
-										<div x-h-sidebar-menu-sub-item>
-											<button type="button" x-h-sidebar-menu-sub-button data-active="false" x-on:click="activeProject = 'alpha'">
-												<span>Alpha</span>
-											</button>
-										</div>
-										<div x-h-sidebar-menu-sub-item>
-											<button type="button" x-h-sidebar-menu-sub-button data-active="false" x-on:click="activeProject = 'beta'">
-												<span>Beta</span>
-											</button>
-										</div>
-									</div>
-								</div>
-							</nav>
-						</div>
-					</div>
-
-					<div x-h-sidebar-separator></div>
-
-					<div x-h-sidebar-group>
-						<div x-h-sidebar-group-label>Loading</div>
-						<div x-h-sidebar-group-content>
-							<div x-h-sidebar-menu>
-								<div x-h-sidebar-menu-skeleton.icon></div>
-								<div x-h-sidebar-menu-skeleton.icon></div>
-								<div x-h-sidebar-menu-skeleton.icon></div>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div x-h-sidebar-footer>
-					<div class="hbox items-center justify-between gap-2">
-						<div class="text-sm text-sidebar-foreground/70 truncate" x-text="profile.fullName"></div>
-						<button type="button" x-h-button data-variant="outline" data-size="sm" x-on:click="createDialogOpen = true">New</button>
-					</div>
-				</div>
-			</aside>
-
-			<div class="min-w-0 flex-1">
-				<div class="mx-auto vbox w-full max-w-6xl gap-6 p-6">
-					<header class="hbox items-center justify-between gap-4">
-						<div class="vbox gap-1">
-							<h1 class="text-xl font-semibold">Dashboard</h1>
-							<p class="text-muted-foreground text-sm">test</p>
-						</div>
-						<div class="hbox items-center gap-2">
-							<button type="button" x-h-button data-variant="outline" x-h-menu-trigger.dropdown aria-haspopup="menu" aria-label="Open menu">Menu</button>
-							<div x-h-menu aria-label="Dashboard menu" data-align="bottom-end">
-								<div x-h-menu-label>Quick actions</div>
-								<button type="button" x-h-menu-item x-on:click="activePage = 'dashboard'">
-									Dashboard
-									<span x-h-menu-item-secondary>⌘D</span>
+					<div x-h-sidebar-group-content>
+						<nav x-h-sidebar-menu>
+							<div x-h-sidebar-menu-item>
+								<button type="button" x-h-sidebar-menu-button :data-active="activePage === 'dashboard'" @click="activePage = 'dashboard'">
+									<i role="img" data-lucide="layout-dashboard"></i>
+									<span>Dashboard</span>
 								</button>
-								<button type="button" x-h-menu-item x-on:click="activePage = 'forms'">
-									Forms
-									<span x-h-menu-item-secondary>⌘F</span>
+								<button type="button" x-h-sidebar-menu-action.autohide @click="createDialogOpen = true">
+									<i role="img" data-lucide="plus"></i>
+									<span class="sr-only">Add</span>
 								</button>
-								<div x-h-menu-separator></div>
+							</div>
 
-								<div x-h-menu-label>Preferences</div>
-								<button type="button" x-h-menu-checkbox-item x-model="menuPrefs.compact">Compact layout</button>
-								<button type="button" x-h-menu-checkbox-item x-model="menuPrefs.showHints">Show hints</button>
-								<div x-h-menu-separator></div>
+							<div x-h-sidebar-menu-item>
+								<button type="button" x-h-sidebar-menu-button :data-active="activePage === 'forms'" @click="activePage = 'forms'">
+									<i role="img" data-lucide="battery-full"></i>
+									<span>Forms</span>
+								</button>
+							</div>
 
-								<div x-h-menu-sub>
-									Theme
-									<div x-h-menu.sub aria-label="Theme submenu">
-										<button type="button" x-h-menu-radio-item="'system'" x-model="menuPrefs.theme">System</button>
-										<button type="button" x-h-menu-radio-item="'light'" x-model="menuPrefs.theme">Light</button>
-										<button type="button" x-h-menu-radio-item="'dark'" x-model="menuPrefs.theme">Dark</button>
-									</div>
-								</div>
+							<div x-h-sidebar-menu-item x-h-collapsible="sidebarSubOpen">
+								<button type="button" x-h-sidebar-menu-button x-h-collapsible-trigger.chevron.90>
+									<i role="img" data-lucide="folder"></i>
+									<span>Projects</span>
+								</button>
+								<ul x-h-sidebar-menu-sub x-h-collapsible-content x-show="!sidebarCollapsed">
+									<li x-h-sidebar-menu-sub-item>
+										<button x-h-sidebar-menu-sub-button :data-active="activeProject === 'alpha'" @click="activeProject = 'alpha'">Alpha</button>
+									</li>
+									<li x-h-sidebar-menu-sub-item>
+										<button x-h-sidebar-menu-sub-button :data-active="activeProject === 'beta'" @click="activeProject = 'beta'">Beta</button>
+									</li>
+								</ul>
+							</div>
+						</nav>
+					</div>
+				</div>
 
-								<div x-h-menu-separator></div>
-								<button type="button" x-h-menu-item data-variant="negative" x-on:click="resetProfile();">Reset all</button>
+				<div x-h-sidebar-separator x-show="!sidebarCollapsed"></div>
+
+				<div x-h-sidebar-group x-show="!sidebarCollapsed">
+					<div x-h-sidebar-group-label>Loading</div>
+					<div x-h-sidebar-group-content>
+						<div x-h-sidebar-menu>
+							<div x-h-sidebar-menu-item>
+								<div x-h-sidebar-menu-skeleton.icon></div>
+							</div>
+							<div x-h-sidebar-menu-item>
+								<div x-h-sidebar-menu-skeleton.icon></div>
+							</div>
+							<div x-h-sidebar-menu-item>
+								<div x-h-sidebar-menu-skeleton.icon></div>
 							</div>
 						</div>
-					</header>
-
-					<main class="grid grid-cols-1 gap-6 md:grid-cols-2">
-						<section x-h-card>
-							<div x-h-card-header>
-								<div>
-									<h2 x-h-card-title>Profile</h2>
-									<p x-h-card-description>test</p>
-								</div>
-							</div>
-							<div x-h-card-content>
-								<form class="vbox gap-4" x-on:submit.prevent>
-									<div class="vbox gap-2">
-										<label class="text-sm font-medium" for="fullName">Full name</label>
-										<input id="fullName" name="fullName" type="text" autocomplete="name" placeholder="Jane Doe" x-h-input x-model="profile.fullName" />
-									</div>
-
-									<div class="vbox gap-2">
-										<label class="text-sm font-medium" for="email">Email</label>
-										<div x-h-input-group>
-											<div x-h-input-group-addon data-align="inline-start">
-												<span x-h-input-group-text>@</span>
-											</div>
-											<input id="email" name="email" type="text" autocomplete="email" placeholder="jane" x-h-input.group x-model="profile.emailLocal" />
-											<div x-h-input-group-addon data-align="inline-end">
-												<span x-h-input-group-text>example.com</span>
-											</div>
-										</div>
-										<p class="text-muted-foreground text-xs">Stored as: <span class="font-medium" x-text="profileEmail || '—'"></span></p>
-									</div>
-
-									<div class="vbox gap-2">
-										<label class="text-sm font-medium" for="phone">Phone</label>
-										<div x-h-input-group>
-											<div x-h-input-group-addon data-align="inline-start">
-												<span x-h-input-group-text>+359</span>
-											</div>
-											<input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="88 123 4567" x-h-input.group x-model="profile.phone" />
-										</div>
-									</div>
-								</form>
-							</div>
-							<div x-h-card-footer class="border-t">
-								<button type="button" x-h-button data-variant="outline" x-on:click="resetProfile()">Reset</button>
-								<div class="flex-1"></div>
-								<button type="button" x-h-button data-variant="primary" x-on:click="saveProfile()">Save profile</button>
-							</div>
-						</section>
-
-						<section x-h-card>
-							<div x-h-card-header>
-								<div>
-									<h2 x-h-card-title>Skeletons</h2>
-									<p x-h-card-description>test</p>
-								</div>
-							</div>
-							<div x-h-card-content class="vbox gap-3">
-								<div x-h-skeleton.card class="h-24 w-full"></div>
-								<div class="hbox items-center gap-3">
-									<div x-h-skeleton.avatar></div>
-									<div class="vbox flex-1 gap-2">
-										<div x-h-skeleton class="h-4 w-2/3"></div>
-										<div x-h-skeleton class="h-4 w-1/2"></div>
-									</div>
-								</div>
-								<div x-h-skeleton.control data-size="md" class="w-full"></div>
-							</div>
-						</section>
-					</main>
+					</div>
 				</div>
+			</div>
+
+			<div x-h-sidebar-footer>
+				<button type="button" x-h-sidebar-menu-button @click="createDialogOpen = true">
+					<i role="img" data-lucide="user-plus"></i>
+					<span x-show="!sidebarCollapsed" x-cloak>New user</span>
+				</button>
+			</div>
+		</div>
+
+		<div class="min-w-0 flex-1">
+			<div class="w-full vbox">
+				<div x-h-toolbar>
+					<span x-h-toolbar-title>Dashboard</span>
+					<div x-h-toolbar-spacer></div>
+					<button type="button" x-h-button x-h-menu-trigger.dropdown data-variant="transparent">
+						<i role="img" data-lucide="menu"></i>
+						<span class="sr-only">Menu</span>
+					</button>
+					<ul x-h-menu aria-label="Dashboard menu" data-align="bottom-end">
+						<div x-h-menu-label>Quick actions</div>
+						<li x-h-menu-item @click="activePage = 'dashboard'">
+							<span>Dashboard</span>
+							<span x-h-menu-item-secondary>⌘D</span>
+						</li>
+						<li x-h-menu-item @click="activePage = 'forms'">
+							<span>Forms</span>
+							<span x-h-menu-item-secondary>⌘F</span>
+						</li>
+						<div x-h-menu-separator></div>
+						<div x-h-menu-label data-inset="true">Preferences</div>
+						<div x-h-menu-checkbox-item x-model="menuPrefs.compact">Compact layout</div>
+						<div x-h-menu-checkbox-item x-model="menuPrefs.showHints">Show hints</div>
+						<div x-h-menu-separator></div>
+						<li x-h-menu-sub>
+							<span>Theme</span>
+							<ul x-h-menu.sub aria-label="Theme submenu">
+								<li x-h-menu-radio-item="'system'" name="themeRadios" x-model="menuPrefs.theme">System</li>
+								<li x-h-menu-radio-item="'light'" name="themeRadios" x-model="menuPrefs.theme">Light</li>
+								<li x-h-menu-radio-item="'dark'" name="themeRadios" x-model="menuPrefs.theme">Dark</li>
+							</ul>
+						</li>
+						<div x-h-menu-separator></div>
+						<li x-h-menu-item data-variant="negative" @click="resetProfile()">Reset all</li>
+					</ul>
+				</div>
+
+				<main class="grid grid-cols-1 gap-6 p-6 md:grid-cols-2">
+					<div x-h-card>
+						<div x-h-card-header>
+							<h2 x-h-card-title>Profile</h2>
+							<p x-h-card-description>test</p>
+						</div>
+						<div x-h-card-content>
+							<form class="vbox gap-4" x-on:submit.prevent>
+								<fieldset x-h-fieldset>
+									<div x-h-field-group>
+										<div x-h-field>
+											<label x-h-label.field for="fullName">Full name</label>
+											<input x-h-input id="fullName" name="fullName" type="text" placeholder="Jane Doe" autocomplete="name" x-model="profile.fullName" />
+										</div>
+										<div x-h-field>
+											<label x-h-label.field for="email">Email</label>
+											<div x-h-input-group>
+												<input x-h-input.group id="email" name="email" autocomplete="email" placeholder="jane" x-model="profile.emailLocal" />
+												<div x-h-input-group-addon data-align="inline-start">@</div>
+												<div x-h-input-group-addon data-align="inline-end">example.com</div>
+											</div>
+											<p x-h-field-description x-text="`Stored as: ${profileEmail || '-'}`"></p>
+										</div>
+										<div x-h-field>
+											<label x-h-label.field for="phone">Phone</label>
+											<div x-h-input-group>
+												<input x-h-input.group id="phone" name="phone" type="tel" autocomplete="tel" placeholder="88 123 4567" x-model="profile.phone" />
+												<div x-h-input-group-addon data-align="inline-start">+359</div>
+											</div>
+										</div>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div x-h-card-footer class="border-t justify-between">
+							<button type="button" x-h-button data-variant="outline" @click="resetProfile()">Reset</button>
+							<button type="button" x-h-button data-variant="primary" @click="saveProfile()">Save profile</button>
+						</div>
+					</div>
+
+					<div x-h-card>
+						<div x-h-card-header>
+							<h2 x-h-card-title>Skeletons</h2>
+							<p x-h-card-description>test</p>
+						</div>
+						<div x-h-card-content class="vbox gap-3">
+							<div class="hbox gap-3">
+								<div x-h-skeleton.avatar></div>
+								<div class="vbox size-full gap-2">
+									<div x-h-skeleton class="h-full w-2/3"></div>
+									<div x-h-skeleton class="h-full w-1/2"></div>
+								</div>
+							</div>
+							<div x-h-skeleton.control data-size="md" class="w-full"></div>
+						</div>
+					</div>
+				</main>
 			</div>
 		</div>
 
 		<div x-h-dialog-overlay x-bind:data-open="createDialogOpen" x-on:click.self="createDialogOpen = false" x-on:keydown.escape.window="createDialogOpen = false">
 			<div x-h-dialog x-on:click.stop>
 				<div x-h-dialog-header>
-					<div>
-						<h2 x-h-dialog-title>New user</h2>
-						<p x-h-dialog-description>Create a user record using Harmonia input groups.</p>
-					</div>
-					<button type="button" x-h-dialog-close x-h-button data-variant="transparent" data-size="icon-sm" aria-label="Close" x-on:click="createDialogOpen = false">&times;</button>
+					<h2 x-h-dialog-title>New user</h2>
+					<button type="button" x-h-dialog-close @click="createDialogOpen = false">
+						<i role="img" data-lucide="x"></i>
+						<span class="sr-only">Close</span>
+					</button>
+					<p x-h-dialog-description>Create a user record using Harmonia input groups.</p>
 				</div>
 
 				<form class="vbox gap-4" x-on:submit.prevent="createUser()">
-					<div class="vbox gap-2">
-						<label class="text-sm font-medium" for="username">Username</label>
-						<div x-h-input-group>
-							<div x-h-input-group-addon data-align="inline-start">
-								<span x-h-input-group-text>@</span>
+					<fieldset x-h-fieldset>
+						<div x-h-field-group>
+							<div x-h-field>
+								<label x-h-label.field for="username">Username</label>
+								<div x-h-input-group>
+									<input x-h-input.group id="username" name="username" type="text" autocomplete="username" placeholder="jane" x-model="newUser.username" autofocus />
+									<div x-h-input-group-addon data-align="inline-start">@</div>
+								</div>
 							</div>
-							<input id="username" name="username" type="text" autocomplete="username" placeholder="jane" x-h-input.group x-model="newUser.username" autofocus />
+							<div x-h-field>
+								<label x-h-label.field for="userEmail">Email</label>
+								<input x-h-input id="userEmail" name="userEmail" type="email" autocomplete="email" placeholder="jane@example.com" x-model="newUser.email" />
+							</div>
 						</div>
-					</div>
-
-					<div class="vbox gap-2">
-						<label class="text-sm font-medium" for="userEmail">Email</label>
-						<input id="userEmail" name="userEmail" type="email" autocomplete="email" placeholder="jane@example.com" x-h-input x-model="newUser.email" />
-					</div>
+					</fieldset>
 
 					<div x-h-dialog-footer>
-						<button type="button" x-h-button data-variant="outline" x-on:click="createDialogOpen = false">Cancel</button>
+						<button type="button" x-h-button data-variant="outline" @click="createDialogOpen = false">Cancel</button>
 						<button type="submit" x-h-button data-variant="primary">Create</button>
 					</div>
 				</form>

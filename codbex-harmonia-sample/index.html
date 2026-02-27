@@ -14,11 +14,10 @@
 	<body class="hbox h-screen" x-data="dashboard">
 		<div x-h-sidebar x-bind:data-collapsed="sidebarCollapsed">
 			<div x-h-sidebar-header>
-				<button type="button" x-h-sidebar-menu-button @click="sidebarCollapsed = !sidebarCollapsed">
-					<span class="sr-only">Toggle sidebar</span>
-					<i role="img" data-lucide="panel-left-open" x-show="sidebarCollapsed" x-cloak></i>
-					<span class="font-semibold truncate" x-show="!sidebarCollapsed" x-cloak>Harmonia</span>
-					<i role="img" data-lucide="panel-left-close" x-show="!sidebarCollapsed" x-cloak></i>
+				<button type="button" x-h-sidebar-menu-button @click="sidebarCollapsed = !sidebarCollapsed" :aria-label="sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'">
+					<i role="img" data-lucide="panel-left-open" x-show="sidebarCollapsed"></i>
+					<span class="font-semibold truncate">Harmonia</span>
+					<i role="img" data-lucide="panel-left-close"></i>
 				</button>
 			</div>
 
@@ -92,7 +91,7 @@
 			<div x-h-sidebar-footer>
 				<button type="button" x-h-sidebar-menu-button @click="createDialogOpen = true">
 					<i role="img" data-lucide="user-plus"></i>
-					<span x-show="!sidebarCollapsed" x-cloak>New user</span>
+					<span>New user</span>
 				</button>
 			</div>
 		</div>
@@ -205,7 +204,7 @@
 					<p x-h-dialog-description>Create a user record using Harmonia input groups.</p>
 				</div>
 
-				<form class="vbox gap-4" x-on:submit.prevent="createUser()">
+				<form id="createUserForm" class="vbox gap-4" x-on:submit.prevent="createUser()">
 					<fieldset x-h-fieldset>
 						<div x-h-field-group>
 							<div x-h-field>
@@ -221,12 +220,11 @@
 							</div>
 						</div>
 					</fieldset>
-
-					<div x-h-dialog-footer>
-						<button type="button" x-h-button data-variant="outline" @click="createDialogOpen = false">Cancel</button>
-						<button type="submit" x-h-button data-variant="primary">Create</button>
-					</div>
 				</form>
+				<div x-h-dialog-footer>
+					<button type="button" x-h-button data-variant="outline" @click="createDialogOpen = false">Cancel</button>
+					<button type="submit" x-h-button data-variant="primary" form="createUserForm">Create</button>
+				</div>
 			</div>
 		</div>
 

@@ -34,59 +34,61 @@
 						</button>
 					</div>
 					<div x-h-sidebar-group-content>
-						<nav x-h-sidebar-menu>
-							<div x-h-sidebar-menu-item>
-								<button type="button" x-h-sidebar-menu-button :data-active="activePage === 'dashboard'" @click="activePage = 'dashboard'">
-									<i role="img" data-lucide="layout-dashboard"></i>
-									<span>Dashboard</span>
-								</button>
-								<button type="button" x-h-sidebar-menu-action.autohide @click="createDialogOpen = true">
-									<i role="img" data-lucide="plus"></i>
-									<span class="sr-only">Add</span>
-								</button>
-							</div>
+						<nav aria-label="Primary navigation">
+							<ul x-h-sidebar-menu>
+								<li x-h-sidebar-menu-item>
+									<button type="button" x-h-sidebar-menu-button :data-active="activePage === 'dashboard'" @click="activePage = 'dashboard'">
+										<i role="img" data-lucide="layout-dashboard"></i>
+										<span>Dashboard</span>
+									</button>
+									<button type="button" x-h-sidebar-menu-action.autohide @click="createDialogOpen = true">
+										<i role="img" data-lucide="plus"></i>
+										<span class="sr-only">Add</span>
+									</button>
+								</li>
 
-							<div x-h-sidebar-menu-item>
-								<button type="button" x-h-sidebar-menu-button :data-active="activePage === 'forms'" @click="activePage = 'forms'">
-									<i role="img" data-lucide="battery-full"></i>
-									<span>Forms</span>
-								</button>
-							</div>
+								<li x-h-sidebar-menu-item>
+									<button type="button" x-h-sidebar-menu-button :data-active="activePage === 'forms'" @click="activePage = 'forms'">
+										<i role="img" data-lucide="battery-full"></i>
+										<span>Forms</span>
+									</button>
+								</li>
 
-							<div x-h-sidebar-menu-item x-h-collapsible="sidebarSubOpen">
-								<button type="button" x-h-sidebar-menu-button x-h-collapsible-trigger.chevron.90>
-									<i role="img" data-lucide="folder"></i>
-									<span>Projects</span>
-								</button>
-								<ul x-h-sidebar-menu-sub x-h-collapsible-content x-show="!sidebarCollapsed">
-									<li x-h-sidebar-menu-sub-item>
-										<button x-h-sidebar-menu-sub-button :data-active="activeProject === 'alpha'" @click="activeProject = 'alpha'">Alpha</button>
-									</li>
-									<li x-h-sidebar-menu-sub-item>
-										<button x-h-sidebar-menu-sub-button :data-active="activeProject === 'beta'" @click="activeProject = 'beta'">Beta</button>
-									</li>
-								</ul>
-							</div>
+								<li x-h-sidebar-menu-item.collapsed="true">
+									<button type="button" x-h-sidebar-menu-button>
+										<i role="img" data-lucide="folder"></i>
+										<span>Projects</span>
+									</button>
+									<ul x-h-sidebar-menu-sub>
+										<li x-h-sidebar-menu-item>
+											<button type="button" x-h-sidebar-menu-button :data-active="activeProject === 'alpha'" @click="activeProject = 'alpha'">Alpha</button>
+										</li>
+										<li x-h-sidebar-menu-item>
+											<button type="button" x-h-sidebar-menu-button :data-active="activeProject === 'beta'" @click="activeProject = 'beta'">Beta</button>
+										</li>
+									</ul>
+								</li>
+							</ul>
 						</nav>
 					</div>
 				</div>
 
-				<div x-h-sidebar-separator x-show="!sidebarCollapsed"></div>
+				<div x-h-sidebar-separator></div>
 
-				<div x-h-sidebar-group x-show="!sidebarCollapsed">
+				<div x-h-sidebar-group>
 					<div x-h-sidebar-group-label>Loading</div>
 					<div x-h-sidebar-group-content>
-						<div x-h-sidebar-menu>
-							<div x-h-sidebar-menu-item>
+						<ul x-h-sidebar-menu>
+							<li x-h-sidebar-menu-item>
 								<div x-h-sidebar-menu-skeleton.icon></div>
-							</div>
-							<div x-h-sidebar-menu-item>
+							</li>
+							<li x-h-sidebar-menu-item>
 								<div x-h-sidebar-menu-skeleton.icon></div>
-							</div>
-							<div x-h-sidebar-menu-item>
+							</li>
+							<li x-h-sidebar-menu-item>
 								<div x-h-sidebar-menu-skeleton.icon></div>
-							</div>
-						</div>
+							</li>
+						</ul>
 					</div>
 				</div>
 			</div>

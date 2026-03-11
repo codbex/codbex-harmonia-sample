@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('alpine:init', () => {
 	Alpine.data('dashboard', () => ({
 		sidebarCollapsed: false,
-		sidebarSubOpen: true,
 		activePage: 'dashboard',
 		activeProject: 'alpha',
 		menuPrefs: {

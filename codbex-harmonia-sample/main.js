@@ -1,40 +1,48 @@
-import Harmonia from '../codbex-harmonia/Harmonia.js'
-
-const app = Vue.createApp({
-    data() {
-        return {
-            formData: {
-                name: '',
-                date: '',
-                gender: '',
-                age: 18,
-                agree: false,
-                option: ''
-            },
-            users: [] // For storing remote data
-        };
-    },
-    methods: {
-        submitForm() {
-            alert(JSON.stringify(this.formData));
-        },
-        // Method to fetch remote data
-        async fetchRemoteData() {
-            try {
-                const response = await fetch('https://jsonplaceholder.typicode.com/users');
-                this.users = await response.json();
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        }
-    },
-    mounted() {
-        // Fetch remote data when the component is mounted
-        this.fetchRemoteData();
-    }
+document.addEventListener('DOMContentLoaded', () => {
+	lucide.createIcons();
 });
-app.use(Harmonia);
-app.mount('#app');
 
-
-
+document.addEventListener('alpine:init', () => {
+	Alpine.data('dashboard', () => ({
+		sidebarCollapsed: false,
+		activePage: 'dashboard',
+		activeProject: 'alpha',
+		menuPrefs: {
+			compact: false,
+			showHints: true,
+			theme: 'system',
+		},
+		createDialogOpen: false,
+		profile: {
+			fullName: 'Jane Doe',
+			emailLocal: 'jane',
+			phone: '',
+		},
+		newUser: {
+			username: '',
+			email: '',
+		},
+		get profileEmail() {
+			const local = (this.profile.emailLocal || '').trim();
+			return local ? `${local}@example.com` : '';
+		},
+		saveProfile() {
+			console.log('saveProfile', {
+				fullName: this.profile.fullName,
+				email: this.profileEmail,
+				phone: this.profile.phone,
+			});
+		},
+		resetProfile() {
+			this.profile.fullName = '';
+			this.profile.emailLocal = '';
+			this.profile.phone = '';
+		},
+		createUser() {
+			console.log('createUser', { ...this.newUser });
+			this.newUser.username = '';
+			this.newUser.email = '';
+			this.createDialogOpen = false;
+		},
+	}));
+});

@@ -1,0 +1,21 @@
+:root,
+:host {
+	--primary: oklch(0.573 0.1205 71.02);
+	--primary-hover: oklch(0.6706 0.1505 61.1);
+	--primary-active: oklch(0.6706 0.1505 61.1);
+	--ring: oklch(0.6706 0.1505 61.1);
+	--information: oklch(0.573 0.1205 71.02);
+	--information-hover: oklch(0.6706 0.1505 61.1);
+	--information-active: oklch(0.6706 0.1505 61.1);
+	--sidebar-primary: oklch(0.6706 0.1505 61.1);
+}
+.dark {
+	--primary: oklch(0.573 0.1205 71.02);
+	--primary-hover: oklch(0.6706 0.1505 61.1);
+	--primary-active: oklch(0.6706 0.1505 61.1);
+	--ring: oklch(0.6706 0.1505 61.1);
+	--information: oklch(0.573 0.1205 71.02);
+	--information-hover: oklch(0.6706 0.1505 61.1);
+	--information-active: oklch(0.6706 0.1505 61.1);
+	--sidebar-primary: oklch(0.6706 0.1505 61.1);
+}
